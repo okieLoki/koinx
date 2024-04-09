@@ -10,7 +10,7 @@ Deployed url: https://koinx-production.up.railway.app
   git clone https://github.com/okieLoki/koinx
   ```
 
-- Install the packages using the package manager of your choice (eg: npm, pnpm, yarn)>
+- Install the packages using the package manager of your choice (eg: npm, pnpm, yarn)
 
   ```
   <package_manager> install
