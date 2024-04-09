@@ -1,12 +1,22 @@
-import express from "express";
+import express, { Express } from "express";
+import { config } from "./config";
+import { DBConnect } from "./database/dbConnect";
 import morgan from "morgan";
-import axios from "axios"
+import { CurrencyUpdater } from "./cron/updateCurrency";
 
-const app = express();
+const app: Express = express();
+
+// check env
+config.verifyConfigData()
+
+// database connection
+DBConnect.connect();
+
+// cron job
+new CurrencyUpdater();
 
 app.use(morgan("dev"));
 
-
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
+app.listen(config.PORT, () => {
+  console.log(`Server running on port ${config.PORT}`);
 });
