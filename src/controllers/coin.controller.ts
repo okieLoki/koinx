@@ -2,7 +2,7 @@ import { config } from "../config";
 import { NextFunction, Request, Response } from "express";
 import { z } from "zod";
 
-const requestValidator = z.object({
+const conversionReqValidator = z.object({
   fromCurrency: z.string().min(1),
   toCurrency: z.string().min(1),
   date: z
@@ -22,6 +22,13 @@ const requestValidator = z.object({
     }),
 });
 
+const coinReqValidator = z
+  .string()
+  .min(1)
+  .refine((value) => value === "bitcoin" || value === "ethereum", {
+    message: "Invalid coin name. Expected values: bitcoin, ethereum",
+  });
+
 export class CoinController {
   public async getConversionRate(
     req: Request,
@@ -29,17 +36,17 @@ export class CoinController {
     next: NextFunction
   ) {
     try {
-      const { fromCurrency, toCurrency, date } = requestValidator.parse(
+      const { fromCurrency, toCurrency, date } = conversionReqValidator.parse(
         req.body
       );
 
       const [historicalDataFrom, historicalDataTo] = await Promise.all([
-        config.axiosInstance.get(`/${fromCurrency}/history`, {
+        config.axiosInstance.get(`/coins/${fromCurrency}/history`, {
           params: {
             date,
           },
         }),
-        config.axiosInstance.get(`/${toCurrency}/history`, {
+        config.axiosInstance.get(`/coins/${toCurrency}/history`, {
           params: {
             date,
           },
@@ -51,6 +58,18 @@ export class CoinController {
           historicalDataFrom.data.market_data.current_price.usd /
           historicalDataTo.data.market_data.current_price.usd,
       });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  public async getCompanyData(req: Request, res: Response, next: NextFunction) {
+    try {
+      const coin = coinReqValidator.parse(req.params.coin);
+      const companyData = await config.axiosInstance.get(
+        `/companies/public_treasury/${coin}`
+      );
+      return res.json(companyData.data);
     } catch (error) {
       next(error);
     }

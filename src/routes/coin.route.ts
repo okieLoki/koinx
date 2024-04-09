@@ -9,7 +9,9 @@ class CoinRoute {
   }
 
   public routes(): Router {
-    this.router.get("/", CoinController.prototype.getConversionRate);
+    this.router.get("/conversion", CoinController.prototype.getConversionRate);
+    this.router.get("/company/:coin", CoinController.prototype.getCompanyData);
+    
     return this.router;
   }
 }
