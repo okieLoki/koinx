@@ -12,7 +12,7 @@ const coinValidator = z.object({
 class CoinService {
   private async fetchCoinData() {
     try {
-      const response = await config.axiosInstance.get("/coins/list");
+      const response = await config.axiosInstance.get("/list");
       return response.data;
     } catch (error) {
       if (error instanceof AxiosError || error instanceof Error) {
