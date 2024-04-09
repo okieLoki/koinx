@@ -49,7 +49,7 @@
 
 - A Cron job has been set up to fetch the data from the Gecko API at a 1-hour interval. The cron job function can be found at `src/lib/coinCronService.ts` and is called in `app.ts` from `src/cron/updateCurrencyCron.ts`.
 
-- To convert currencies, use the following endpoint: `http://localhost:3000/coin/conversion?fromCurrency={coin1}&toCurrency={coin2}&date={date}`.
+- To convert currencies, use the following endpoint: `https://koinx-production.up.railway.app/coin/conversion?fromCurrency={coin1}&toCurrency={coin2}&date={date}`.
 
     Example usage: 
     ![Task 2](https://res.cloudinary.com/ds90zherj/image/upload/v1712671109/mbl5c3tf9o5fkxkjltpy.png "Example usage")
@@ -62,5 +62,5 @@
     ![Task 3](https://res.cloudinary.com/ds90zherj/image/upload/v1712671304/fhsibubnrihezecwd5hu.png "Example usage")
 
 
-
+> Replace https://koinx-production.up.railway.app with http://localhost:3000 for local testing
 
