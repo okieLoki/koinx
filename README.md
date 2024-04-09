@@ -1,5 +1,7 @@
 ## Koinx backend assignment
 
+Deployed url: https://koinx-production.up.railway.app
+
 ### How to use locally?
 
 - Clone the repository
