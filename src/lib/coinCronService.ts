@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 import { config } from "../config";
-import { CoinModel, CoinType } from "../models/coin.model";
+import { CoinModel, CoinType } from "../models/coinModel";
 import { z } from "zod";
 
 const coinValidator = z.object({
@@ -9,7 +9,7 @@ const coinValidator = z.object({
   name: z.string(),
 });
 
-class CoinService {
+class CoinCronService {
   private async fetchCoinData() {
     try {
       const response = await config.axiosInstance.get("/coins/list");
@@ -49,4 +49,4 @@ class CoinService {
   }
 }
 
-export const coinService: CoinService = new CoinService();
+export const coinCronService: CoinCronService = new CoinCronService();

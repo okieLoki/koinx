@@ -1,4 +1,4 @@
-import { CoinController } from "../controllers/coin.controller";
+import { CoinController } from "../controllers/coinController";
 import { Router } from "express";
 
 class CoinRoute {
