@@ -1,3 +1,4 @@
+import axios from "axios";
 import { config } from "../config";
 import { NextFunction, Request, Response } from "express";
 import { z } from "zod";
@@ -37,7 +38,7 @@ export class CoinController {
   ) {
     try {
       const { fromCurrency, toCurrency, date } = conversionReqValidator.parse(
-        req.body
+        req.query
       );
 
       const [historicalDataFrom, historicalDataTo] = await Promise.all([
