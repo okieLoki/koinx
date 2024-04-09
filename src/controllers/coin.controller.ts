@@ -1,7 +1,6 @@
 import { config } from "../config";
-import { AxiosError } from "axios";
-import { Request, Response } from "express";
-import { ZodError, z } from "zod";
+import { NextFunction, Request, Response } from "express";
+import { z } from "zod";
 
 const requestValidator = z.object({
   fromCurrency: z.string().min(1),
@@ -24,7 +23,11 @@ const requestValidator = z.object({
 });
 
 export class CoinController {
-  public async getConversionRate(req: Request, res: Response) {
+  public async getConversionRate(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
     try {
       const { fromCurrency, toCurrency, date } = requestValidator.parse(
         req.body
@@ -44,23 +47,12 @@ export class CoinController {
       ]);
 
       return res.json({
-        exachangeRate:
+        exchangeRate:
           historicalDataFrom.data.market_data.current_price.usd /
           historicalDataTo.data.market_data.current_price.usd,
       });
     } catch (error) {
-      if (error instanceof ZodError) {
-        return res.status(400).json({
-          message: "Bad Request",
-          errors: error.errors,
-        });
-      } else if (error instanceof AxiosError || error instanceof Error) {
-        console.error(error);
-        return res.status(500).json({
-          message: "Coin or date invalid",
-          error: error.message,
-        });
-      }
+      next(error);
     }
   }
 }
